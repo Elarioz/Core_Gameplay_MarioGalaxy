@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public class Player : MonoBehaviour
 
 
     public float speed = 10;
-    public float JumpHeight = 2;
+    public float JumpHeight = 8;
 
     float gravity = 100;
     bool OnGround = false;
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
         float z = Input.GetAxis("Vertical") * Time.deltaTime * speed;
 
         transform.Translate(x, 0, z);
+
 
         //Local Rotation
         // 80 est la vitesse de "pivot"
@@ -77,6 +79,7 @@ public class Player : MonoBehaviour
             if (distanceToGround <= 0.2f)
             {
                 OnGround = true;
+
             }
             else
             {
@@ -129,6 +132,5 @@ public class Player : MonoBehaviour
 
         }
     }
-
 
 }

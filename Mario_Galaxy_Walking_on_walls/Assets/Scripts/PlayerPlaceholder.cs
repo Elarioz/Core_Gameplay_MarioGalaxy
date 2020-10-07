@@ -11,6 +11,7 @@ public class PlayerPlaceholder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //SMOOTH
 
         //POSITION
         transform.position = Vector3.Lerp(transform.position, Player.transform.position, 0.1f);
