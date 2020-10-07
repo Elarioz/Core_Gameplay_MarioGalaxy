@@ -1,4 +1,2 @@
-# Walk-On-Anything
-A unity system to walk up any surface based on the grounds normals, similar to the systems used in some areas of mario galaxy
-
-check out the youtube tutorial on this project here - https://www.youtube.com/watch?v=QSDUA9YpVwQ&feature=youtu.be 
+# Mario Galaxy walk on walls system
+Testing the capability of the character to walk on walls and jumping from one planet to another.
