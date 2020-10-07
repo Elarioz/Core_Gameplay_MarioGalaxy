@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Stats")]
     public float Speed = 15f; //max speed for basic movement
     public float Acceleration = 4f; //Acceleration
-    public float turnSpeed = 2f; // How quickly we make the character turn
+    public float turnSpeed = 4f; // How quickly we make the character turn
     private Vector3 MovDirection, movepos, targetDir, GroundDir; //basicaly the direction we want to go to
 
     [Header("Jumps")]
