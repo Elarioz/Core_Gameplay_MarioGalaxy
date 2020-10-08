@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
+using UnityEngine.TestTools;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -32,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     private float ActGravAmt; //gravity applied to our character
 
     public LayerMask GroundLayers; //what layers the ground can be
-    public float GravityRotationSpeed = 10f; //how fast we rotate to a new gravity direction
+    public float GravityRotationSpeed = 40f; //how fast we rotate to a new gravity direction
 
     [Header("Stats")]
     public float Speed = 15f; //max speed for basic movement
@@ -43,19 +45,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jumps")]
     public float JumpAmt;  //How high should we jump
     private bool HasJumped; //Have we jumped or not
-
-
-
-
-    // Adding Planet changing script variables 
-
-    public GameObject Planet;
-    public GameObject PlayerPlaceholder;
-
-
-    float distanceToGround;
-    Vector3 Groundnormal;
-
 
 
     // Start is called before the first frame update
@@ -93,6 +82,10 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+
+
+
+
     }
 
     // Update is called once per frame
@@ -181,9 +174,9 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit HitCentre;
         RaycastHit HitBack;
 
-        Physics.Raycast(GroundChecks[0].position, -GroundChecks[0].transform.up, out HitFront, 10f, GroundLayers);
-        Physics.Raycast(GroundChecks[1].position, -GroundChecks[1].transform.up, out HitCentre, 10f, GroundLayers);
-        Physics.Raycast(GroundChecks[2].position, -GroundChecks[2].transform.up, out HitBack, 10f, GroundLayers);
+        Physics.Raycast(GroundChecks[0].position, -GroundChecks[0].transform.up, out HitFront, 2f, GroundLayers);
+        Physics.Raycast(GroundChecks[1].position, -GroundChecks[1].transform.up, out HitCentre, 4f, GroundLayers);
+        Physics.Raycast(GroundChecks[2].position, -GroundChecks[2].transform.up, out HitBack, 1f, GroundLayers);
 
         Vector3 HitDir = transform.up;
 
@@ -297,10 +290,10 @@ public class PlayerMovement : MonoBehaviour
         Quaternion lookDir = Quaternion.LookRotation(targetDir);
 
         Vector3 SetGroundDir = FloorAngleCheck();
-        GroundDir = Vector3.Lerp(GroundDir, SetGroundDir, d * GravityRotationSpeed * 400);
+        GroundDir = Vector3.Lerp(GroundDir * 2000, SetGroundDir, d * GravityRotationSpeed * 400);
 
         //lerp mesh slower when not on ground
-        RotateSelf(GroundDir, d, GravityRotationSpeed);
+        RotateSelf(GroundDir * 2000, d, GravityRotationSpeed);
         RotateMesh(d, transform.forward, turnSpeed);
 
         //move character
@@ -332,33 +325,4 @@ public class PlayerMovement : MonoBehaviour
         Quaternion SlerpRot = Quaternion.LookRotation(LookDir, transform.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, SlerpRot, spd * d);
     }
-
-
-
-
-
-
-    //PLANET CHANGING
-
-    //private void OnTriggerEnter(Collider collision)
-    //{
-    //    if (collision.transform != Planet.transform)
-    //    {
-
-    //        Planet = collision.transform.gameObject;
-
-    //        Vector3 gravDirection = (transform.position - Planet.transform.position).normalized;
-
-    //        Quaternion toRotation = Quaternion.FromToRotation(transform.up, gravDirection) * transform.rotation;
-    //        transform.rotation = toRotation;
-
-    //        Rigid.velocity = Vector3.zero;
-    //        Rigid.AddForce(gravDirection * GravityAmt);
-
-
-    //        PlayerPlaceholder.GetComponent<PlayerPlaceholder>().NewPlanet(Planet);
-
-    //    }
-    //}
-
 }
