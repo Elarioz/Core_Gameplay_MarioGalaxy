@@ -34,10 +34,10 @@ public class PlayerMovement : MonoBehaviour
     private float ActGravAmt; //gravity applied to our character
 
     public LayerMask GroundLayers; //what layers the ground can be
-    public float GravityRotationSpeed = 40f; //how fast we rotate to a new gravity direction
+    public float GravityRotationSpeed = 80f; //how fast we rotate to a new gravity direction
 
     [Header("Stats")]
-    public float Speed = 15f; //max speed for basic movement
+    public float Speed = 15f; //max speed for movement
     public float Acceleration = 4f; //Acceleration
     public float turnSpeed = 4f; // How quickly we make the character turn
     private Vector3 MovDirection, movepos, targetDir, GroundDir; //basicaly the direction we want to go to
@@ -82,10 +82,6 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-
-
-
-
     }
 
     // Update is called once per frame
@@ -152,20 +148,19 @@ public class PlayerMovement : MonoBehaviour
     {
         HasJumped = true;
 
-        Rigid.velocity = Vector3.zero;
+        //Rigid.velocity = Vector3.zero;
 
         SetInAir();
 
+        // Adapting the jump depending on the direction we want it to take
         if (UpwardsAmt != 0)
-            Rigid.AddForce((transform.up * UpwardsAmt), ForceMode.Impulse);
+            Rigid.AddForce((transform.up * Speed * Time.deltaTime * UpwardsAmt * 15), ForceMode.Impulse);
 
         ActGravAmt = 0;
 
-        yield return new WaitForSecondsRealtime(0.3f);
+        yield return new WaitForSecondsRealtime(0.4f);
         HasJumped = false;
-    }   
-    
-
+    }  
 
     //check the angle of the floor we are stood on
     Vector3 FloorAngleCheck()
@@ -174,9 +169,9 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit HitCentre;
         RaycastHit HitBack;
 
-        Physics.Raycast(GroundChecks[0].position, -GroundChecks[0].transform.up, out HitFront, 2f, GroundLayers);
-        Physics.Raycast(GroundChecks[1].position, -GroundChecks[1].transform.up, out HitCentre, 4f, GroundLayers);
-        Physics.Raycast(GroundChecks[2].position, -GroundChecks[2].transform.up, out HitBack, 1f, GroundLayers);
+        Physics.Raycast(GroundChecks[0].position, -GroundChecks[0].transform.up, out HitFront, 20f, GroundLayers);
+        Physics.Raycast(GroundChecks[1].position, -GroundChecks[1].transform.up, out HitCentre, 8f, GroundLayers);
+        Physics.Raycast(GroundChecks[2].position, -GroundChecks[2].transform.up, out HitBack, 10f, GroundLayers);
 
         Vector3 HitDir = transform.up;
 
@@ -193,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
             HitDir += HitBack.normal;
         }
 
-        Debug.DrawLine(transform.position, transform.position + (HitDir.normalized * 5f), Color.red);
+        //Debug.DrawLine(transform.position, transform.position + (HitDir.normalized * 5f), Color.red);
 
         return HitDir.normalized;
     }
@@ -290,10 +285,10 @@ public class PlayerMovement : MonoBehaviour
         Quaternion lookDir = Quaternion.LookRotation(targetDir);
 
         Vector3 SetGroundDir = FloorAngleCheck();
-        GroundDir = Vector3.Lerp(GroundDir * 2000, SetGroundDir, d * GravityRotationSpeed * 400);
+        GroundDir = Vector3.Lerp(GroundDir, SetGroundDir, d * GravityRotationSpeed * 300);
 
         //lerp mesh slower when not on ground
-        RotateSelf(GroundDir * 2000, d, GravityRotationSpeed);
+        RotateSelf(GroundDir, d, GravityRotationSpeed);
         RotateMesh(d, transform.forward, turnSpeed);
 
         //move character
